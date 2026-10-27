@@ -30,6 +30,10 @@ if(BUILD_CLIENT)
         GIT_REPOSITORY https://github.com/libcpr/cpr.git
         GIT_TAG 0817715923c9705e68994eb52ef9df3f6845beba)
     FetchContent_MakeAvailable(cpr)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        # Pinned CPR uses APIs deprecated in newer system libcurl releases.
+        target_compile_options(cpr PRIVATE -Wno-error=deprecated-declarations)
+    endif()
     add_executable(${PROJECT_NAME}
         main.cpp peer_connect.cpp tcp_connect.cpp torrent_tracker.cpp
         torrent_file.cpp bencode.cpp message.cpp byte_tools.cpp
