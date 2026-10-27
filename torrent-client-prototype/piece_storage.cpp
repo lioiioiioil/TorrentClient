@@ -15,7 +15,7 @@ PieceStorage::PieceStorage(const TorrentFile& tf, const std::filesystem::path& o
     for(int i = count_pieces_to_download - 1; i >= 0; --i) {
         remainPieces_.emplace(std::make_shared<Piece>(
                 i,
-                (i == tf.pieceHashes.size() - 1 ? tf.length % tf.pieceLength : tf.pieceLength),
+                (i == tf.pieceHashes.size() - 1 ? tf.length - i * tf.pieceLength : tf.pieceLength),
                 tf.pieceHashes[i]
                 ));
     }
@@ -41,7 +41,7 @@ void PieceStorage::PieceProcessed(PiecePtr& piece) {
     std::unique_lock<std::mutex> lock(mtx_);
     if (!piece->HashMatches()) {
         std::cout << "Piece " << piece->GetIndex() << " hash doesn't match" << std::endl;
-        mtx_.unlock();
+        lock.unlock();
         AddPieceToDownload(piece);
         return;
     }

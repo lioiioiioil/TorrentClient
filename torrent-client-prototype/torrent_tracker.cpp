@@ -1,5 +1,6 @@
 #include "torrent_tracker.h"
 #include "bencode.h"
+#include <cpr/cpr.h>
 
 TorrentTracker::TorrentTracker(const std::string& url)
         : url_(url)
@@ -38,3 +39,4 @@ void TorrentTracker::UpdatePeers(const TorrentFile& tf, std::string peerId, int 
         }
     }
 }
+

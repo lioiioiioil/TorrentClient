@@ -1,11 +1,4 @@
-all: compile run
+.PHONY: all compile run test clean
+all compile run test clean:
+	$(MAKE) -C .. $@
 
-compile:
-	cmake -S . -B cmake-build
-	cd cmake-build && make
-
-run: compile
-	./cmake-build/torrent-client-prototype
-
-clean:
-	rm -rf cmake-build

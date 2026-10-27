@@ -26,17 +26,9 @@ void sha1(char* arr, size_t len, unsigned char* ans)
 }
 
 std::string CalculateSHA1(const std::string& msg) {
-    char msg_mas[msg.size()];
-    unsigned char msg_hash[20];
-    for (size_t i = 0; i < msg.size(); ++i) {
-        msg_mas[i] = msg[i];
-    }
-    sha1(msg_mas, msg.size(), msg_hash);
-    std::string ans_hash = "";
-    for (int i = 0; i < 20; ++i) {
-        ans_hash += msg_hash[i];
-    }
-    return ans_hash;
+    unsigned char digest[SHA_DIGEST_LENGTH];
+    SHA1(reinterpret_cast<const unsigned char*>(msg.data()), msg.size(), digest);
+    return std::string(reinterpret_cast<const char*>(digest), SHA_DIGEST_LENGTH);
 }
 
 /*
@@ -53,3 +45,4 @@ std::string HexEncode(const std::string& input) {
     }
     return ans;
 }
+
